@@ -1,6 +1,7 @@
 // Create board
 
-export default function createBoard(boardSize) {
+export default function buildBoard() {
+  const boardSize = 8;
   const board = new Array(boardSize);
 
   for (let i = 0; i < boardSize; i++) {
