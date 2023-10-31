@@ -1,5 +1,5 @@
 export default class Board {
-  constructor(nodes) {
-    this.nodes = [...nodes];
+  constructor(size) {
+    this.size = size;
   }
 }

@@ -1,6 +1,7 @@
 export default class Knight {
-  constructor(value) {
-    this.value = value;
-    this.edgeList = [];
+  constructor() {
+    this.visitedSquares = [];
+    this.validSquares = [];
+
   }
 }
