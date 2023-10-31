@@ -2,6 +2,7 @@
   "name": "knightstravails",
   "version": "1.0.0",
   "description": "### For this project, you’ll need to use a data structure that’s similar (but not identical) to a binary tree.",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
