@@ -1,13 +1,21 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-restricted-syntax */
+class Board {
+  constructor(nodes) {
+    this.nodes = [...nodes];
+  }
+}
 
-const possibleMoves = [];
+const board = new Board(getPossibleMoves([0, 3]));
 
 // Checks if coordinate is not off the board
-function isOnBoard(coord) {
+export default function isOnBoard(coord) {
   return coord >= 0 && coord < 8;
 }
 
+// Calculate all possible moves from starting position
 function getPossibleMoves(startingSquare) {
+  const possibleMoves = [];
   const deltas = [
     [1, 2],
     [1, -2],
@@ -23,6 +31,7 @@ function getPossibleMoves(startingSquare) {
     const x = startingSquare[0] + delta[0];
     const y = startingSquare[1] + delta[1];
 
+    // Push all valid coordinates to array
     if (isOnBoard(x) && isOnBoard(y)) {
       possibleMoves.push([x, y]);
     }
@@ -31,4 +40,4 @@ function getPossibleMoves(startingSquare) {
   return possibleMoves;
 }
 
-console.log(getPossibleMoves([3, 3]));
+console.log(board.nodes);

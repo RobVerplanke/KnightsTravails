@@ -7,15 +7,19 @@ function knightMoves([startX, startY], [endX, endY]) {
   const startingSquare = [startX, startY];
   const endSquare = [endX, endY];
 
-  const validStartSquare = startingSquare.every(isOnBoard());
-  const validEndSquare = endSquare.every(isOnBoard());
-
-  if (validStartSquare && validEndSquare) {
-    console.log('valid');
-    // const knight = new Knight(validStart, validEnd);
+  // Validate coordinates
+  if (isOnBoard(startingSquare[0]) && isOnBoard(startingSquare[1])) {
+    console.log('valid startingpoint');
   } else {
-    console.log('not valid');
+    console.log('not a valid startingpoint');
   }
+
+  if (isOnBoard(endSquare[0]) && isOnBoard(endSquare[1])) {
+    console.log('valid endpoint');
+  } else {
+    console.log('not a valid endpoint');
+  }
+
 }
 
 knightMoves([0, 0], [3, 3]); // [[0,0],[2,1],[3,3]]
