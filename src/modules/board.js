@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable import/extensions */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-restricted-syntax */
@@ -15,13 +16,23 @@ class Board {
   }
 
   buildGraph(node) {
-    for (const edge of node.edgesList) {
-      const knight = createNewKnight(edge);
-      knight.edgesList = [...getPossibleMoves(edge)];
-      console.log('new knight: ', knight);
 
+    console.log('node: ', node);
+
+    for (const edge of node.edgesList) {
+
+      const knight = createNewKnight(edge);
+      knight.edgesList = getPossibleMoves(edge);
+      knight.endNode = node.endNode;
+
+      // Set coorinates of current node
+      knight.currentNode = edge;
+
+      // Set coordinates of parent node
+      knight.parentNode = node.currentNode;
+
+      console.log('knight: ', knight);
     }
-    // create new knight for each child node
     // keep count of amount of new knights that are created
     // set children(nodes) with its possibleMoves
     // repeat until destination node is reached
@@ -73,27 +84,20 @@ function getPossibleMoves(startingNode) {
 export default function knightMoves(start, end) {
 
   // Validate coordinates
-  if (isOnBoard(start[0]) && isOnBoard(start[1])) {
-    console.log('valid startingpoint');
+  if (isOnBoard(start[0]) && isOnBoard(start[1])
+     && isOnBoard(end[0]) && isOnBoard(end[1])) {
 
     // Create a knight piece
     const node = createNewKnight(getPossibleMoves(start));
+    node.currentNode = start;
+    node.endNode = end;
 
     // Create a board with the kniht piece "on" it
     const board = createNewBoard(node);
 
     // Build the graph
     board.buildGraph(node);
-
-    console.log('knight: ', node);
-    console.log('board: ', board);
   } else {
-    console.log('not a valid startingpoint');
-  }
-
-  if (isOnBoard(end[0]) && isOnBoard(end[1])) {
-    console.log('valid endpoint');
-  } else {
-    console.log('not a valid endpoint');
+    console.log('coords are not valid');
   }
 }
