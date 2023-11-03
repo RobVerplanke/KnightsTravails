@@ -1,15 +1,28 @@
+/* eslint-disable import/extensions */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-restricted-syntax */
+
+import createNewKnight from './knight.js';
 
 // Ckeckerboard with all possible moves as its children
 class Board {
   constructor(nodes) {
-    this.nodes = [...nodes];
+    this.nodes = [nodes];
+  }
+
+  addToBoard(node) {
+    this.nodes.push(node);
   }
 
   buildGraph(node) {
-    // create new board for each child node
-    // keep count of amount of boards that are created
+    for (const edge of node.edgesList) {
+      const knight = createNewKnight(edge);
+      knight.edgesList = [...getPossibleMoves(edge)];
+      console.log('new knight: ', knight);
+
+    }
+    // create new knight for each child node
+    // keep count of amount of new knights that are created
     // set children(nodes) with its possibleMoves
     // repeat until destination node is reached
     // return the shortest path with getShortestPath method
@@ -18,6 +31,11 @@ class Board {
   getShortestPath() {
 
   }
+}
+
+// Create new board
+function createNewBoard(nodes) {
+  return new Board(nodes);
 }
 
 // Checks if coordinate is not off the board
@@ -57,6 +75,18 @@ export default function knightMoves(start, end) {
   // Validate coordinates
   if (isOnBoard(start[0]) && isOnBoard(start[1])) {
     console.log('valid startingpoint');
+
+    // Create a knight piece
+    const node = createNewKnight(getPossibleMoves(start));
+
+    // Create a board with the kniht piece "on" it
+    const board = createNewBoard(node);
+
+    // Build the graph
+    board.buildGraph(node);
+
+    console.log('knight: ', node);
+    console.log('board: ', board);
   } else {
     console.log('not a valid startingpoint');
   }
