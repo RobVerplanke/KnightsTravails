@@ -29,27 +29,36 @@ class Board {
   }
 
   _buildGraph(node, end, level, visitedNodes) {
-    console.log('node: ', node);
+    console.log('Startingnode:\n', node, '\n');
     visitedNodes.push(node.coord);
-    let counter = 1;
 
-    // For each possible move, create a new knight peace
-    for (const edge of node.edgesList) {
+    // Itterate through each possible move
+    for (const edgeCoord of node.edgesList) {
 
-      const knight = createNewKnight(edge, edge);
+      // Base case
 
-      // Store all its possible moves in its edgesList array
-      knight.edgesList = getPossibleMoves(edge);
+      // check if edgeCoord exist in vissitedNodes list
 
-      // Show number of knights
-      console.log(`Knight ${counter}: `);
-      console.log(knight);
-      counter++;
+      // Create a new knight peace
+      const knight = createNewKnight(edgeCoord);
+
+      // Set current coorinate
+      knight.coord = edgeCoord;
+
+      // Store all possible moves in its edgesList array
+      knight.edgesList = getPossibleMoves(edgeCoord);
 
       // Keep track of all visited node coordinates
-      visitedNodes.push(edge);
+      visitedNodes.push(edgeCoord);
+
+      // Recursivly visit each possible move
+
+      // Return shortest path
+
+      console.log(knight, '\n');
+
     }
-    console.log('visited nodes: ', visitedNodes);
+    console.log('\nVisited nodes: \n', visitedNodes);
 
   }
 
@@ -102,7 +111,8 @@ export default function knightMoves(startingCoord, endCoord) {
      && isOnBoard(endCoord[0]) && isOnBoard(endCoord[1])) {
 
     // Create a knight piece
-    const node = createNewKnight(getPossibleMoves(startingCoord), startingCoord);
+    const node = createNewKnight(getPossibleMoves(startingCoord));
+    node.coord = startingCoord;
 
     // Create a board with the kniht piece "on" it
     const board = createNewBoard(node);
