@@ -1,6 +1,7 @@
 class Knight {
-  constructor(edges) {
+  constructor(edges, coord) {
     this.edgesList = edges;
+    this.coord = coord;
   }
 
   connect(node) {
@@ -10,9 +11,8 @@ class Knight {
   getCurrentNode() {
     return this.currentNode;
   }
-
 }
 
-export default function createNewKnight(edges) {
-  return new Knight(edges);
+export default function createNewKnight(edges, coord) {
+  return new Knight(edges, coord);
 }

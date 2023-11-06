@@ -20,36 +20,38 @@ class Board {
 
   buildGraph(startNode, endNode) {
 
-    const node = startNode;
+    const currentNode = startNode;
     const end = endNode;
     const visitedNodes = [];
     const level = 0;
 
-    return this._buildTree(node, level, visitedNodes, end);
+    return this._buildGraph(currentNode, end, level, visitedNodes);
   }
 
-  _buildTree(node, level, visitedNodes, end) {
+  _buildGraph(node, end, level, visitedNodes) {
     console.log('node: ', node);
-    console.log('visited nodes: ', visitedNodes);
-    console.log('end node: ', end);
+    visitedNodes.push(node.coord);
+    let counter = 1;
 
     // For each possible move, create a new knight peace
     for (const edge of node.edgesList) {
-      const knight = createNewKnight(edge);
+
+      const knight = createNewKnight(edge, edge);
 
       // Store all its possible moves in its edgesList array
       knight.edgesList = getPossibleMoves(edge);
 
-      console.log('knight: ', knight);
+      // Show number of knights
+      console.log(`Knight ${counter}: `);
+      console.log(knight);
+      counter++;
+
+      // Keep track of all visited node coordinates
+      visitedNodes.push(edge);
     }
+    console.log('visited nodes: ', visitedNodes);
+
   }
-
-  // keep count of amount of new knights that are created
-  // set children(nodes) with its possibleMoves
-  // repeat until destination node is reached
-  // return the shortest path with getShortestPath method
-
-  // buildTree(node);
 
   getShortestPath() {
     console.log('test');
@@ -100,7 +102,7 @@ export default function knightMoves(startingCoord, endCoord) {
      && isOnBoard(endCoord[0]) && isOnBoard(endCoord[1])) {
 
     // Create a knight piece
-    const node = createNewKnight(getPossibleMoves(startingCoord));
+    const node = createNewKnight(getPossibleMoves(startingCoord), startingCoord);
 
     // Create a board with the kniht piece "on" it
     const board = createNewBoard(node);
