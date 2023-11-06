@@ -1,9 +1,6 @@
 class Knight {
   constructor(edges) {
     this.edgesList = edges;
-    this.parentNode = [];
-    this.currentNode = [];
-    this.endNode = [];
   }
 
   connect(node) {
