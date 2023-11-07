@@ -3,7 +3,7 @@
 
 import knightMoves from './modules/board.js';
 
-const startingNode = [5, 2];
-const endNode = [3, 3];
+const startingNode = [0, 0];
+const endNode = [1, 2];
 
 knightMoves(startingNode, endNode); // [[0,0],[2,1],[3,3]]

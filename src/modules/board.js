@@ -14,51 +14,55 @@ class Board {
     this.nodes = [nodes];
   }
 
-  addToBoard(node) {
-    this.nodes.push(node);
-  }
-
-  buildGraph(startNode, endNode) {
+  buildGraph(startNode, end) {
 
     const currentNode = startNode;
-    const end = endNode;
-    const visitedNodes = [];
+    const endCoord = end;
     const level = 0;
 
-    return this._buildGraph(currentNode, end, level, visitedNodes);
+    // Add current coordinate to visitedNodes list
+    currentNode.visitedNodes.push(currentNode.coord);
+
+    return this._buildGraph(currentNode, endCoord, level);
   }
 
-  _buildGraph(node, end, level, visitedNodes) {
+  _buildGraph(node, end, level) {
+
     console.log('Startingnode:\n', node, '\n');
-    visitedNodes.push(node.coord);
+
+    // Check if end node excists in edges list
+    if (node.edgesList.some(checkCoord)) {
+      console.log(`You made it in ${level + 1} moves! Here's your path:`);
+      console.log(node.visitedNodes, end);
+      return null;
+    }
+
+    function checkCoord(coord) {
+      return coord[0] === end[0] && coord[1] === end[1];
+    }
 
     // Itterate through each possible move
     for (const edgeCoord of node.edgesList) {
 
-      // Base case
-
-      // check if edgeCoord exist in vissitedNodes list
-
-      // Create a new knight peace
+      // Create a new node/knight peace for each possible move
       const knight = createNewKnight(edgeCoord);
 
-      // Set current coorinate
+      // Set its coorinate
       knight.coord = edgeCoord;
 
-      // Store all possible moves in its edgesList array
+      // Store all its possible moves in its visitedNodes list
       knight.edgesList = getPossibleMoves(edgeCoord);
 
-      // Keep track of all visited node coordinates
-      visitedNodes.push(edgeCoord);
-
-      // Recursivly visit each possible move
-
-      // Return shortest path
+      // Add current coordinate to the visitedNodes list
+      knight.visitedNodes.push(edgeCoord, ...node.visitedNodes);
 
       console.log(knight, '\n');
 
+      // Recursion
+      this._buildGraph(knight, end, level + 1);
     }
-    console.log('\nVisited nodes: \n', visitedNodes);
+
+    return level;
 
   }
 
