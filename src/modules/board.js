@@ -1,90 +1,10 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-shadow */
-/* eslint-disable class-methods-use-this */
 /* eslint-disable import/extensions */
-/* eslint-disable no-use-before-define */
+/* eslint-disable max-len */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-syntax */
 
 import createNewKnight from './knight.js';
-
-// Ckeckerboard with all possible moves as its children
-class Board {
-  constructor(nodes) {
-    this.nodes = [nodes];
-  }
-
-  buildGraph(startNode, end) {
-
-    const currentNode = startNode;
-    const endCoord = end;
-    const level = 0;
-
-    // Add current coordinate to visitedNodes list
-    currentNode.visitedNodes.push(currentNode.coord);
-
-    return this._buildGraph(currentNode, endCoord, level);
-  }
-
-  _buildGraph(node, end, level) {
-
-    console.log('Startingnode:\n', node, '\n');
-
-    // Check if end node excists in edges list
-    if (node.edgesList.some(checkEndCoord)) {
-      console.log(`You made it in ${level + 1} moves! Here's your path:`);
-      console.log(...node.visitedNodes, end);
-      return null;
-    }
-
-    function checkEndCoord(coord) {
-      return coord[0] === end[0] && coord[1] === end[1];
-    }
-
-    function checkVisistedNodes(visitedCoord, nodeCoord) {
-      console.log('test');
-      return visitedCoord[0] === nodeCoord[0] && visitedCoord[1] === nodeCoord[1];
-    }
-
-    // Itterate through each possible move
-    for (const edgeCoord of node.edgesList) {
-
-      // If edgeList coord doesn't exist in visitedNodes
-      if (!node.visitedNodes.some(checkVisistedNodes, node.coord)) {
-
-        // Create a new node/knight peace for each possible move
-        const knight = createNewKnight(edgeCoord);
-
-        // Set its coorinate
-        knight.coord = edgeCoord;
-
-        // Store all its possible moves in its visitedNodes list
-        knight.edgesList = getPossibleMoves(edgeCoord);
-
-        // Add current coordinate to the visitedNodes list
-        knight.visitedNodes.push(...node.visitedNodes, edgeCoord);
-
-        console.log(knight, '\n');
-
-        // Recursion
-        this._buildGraph(knight, end, level + 1);
-      }
-
-    }
-
-    return level;
-
-  }
-
-  getShortestPath() {
-    console.log('test');
-  }
-}
-
-// Create new board
-function createNewBoard(nodes) {
-  return new Board(nodes);
-}
 
 // Checks if coordinate is not off the board
 function isOnBoard(coord) {
@@ -116,6 +36,74 @@ function getPossibleMoves(coord) {
   }
 
   return possibleMoves;
+}
+
+// Ckeckerboard with all possible moves as its children
+class Board {
+  constructor(nodes) {
+    this.nodes = [nodes];
+  }
+
+  buildGraph(startNode, end) {
+    const currentNode = startNode;
+    const endCoord = end;
+    const level = 0;
+
+    return this._buildGraph(currentNode, endCoord, level);
+  }
+
+  _buildGraph(node, end, level) {
+
+    const paths = [];
+
+    // Filter out duplicates from edgesList
+    node.edgesList = node.edgesList.filter((coord) => node.visitedNodes.indexOf(coord) === -1);
+
+    // Check if end node exists in edges list
+    function checkEndCoord(coord) {
+      return coord[0] === end[0] && coord[1] === end[1];
+    }
+
+    if (node.edgesList.some(checkEndCoord)) {
+      paths.push([...node.visitedNodes, end]);
+      console.log(`You made it in ${level + 1} moves! Here's your path:`);
+      console.log('Paths: ', paths);
+      return level + 1;
+    }
+
+    // Iterate through each possible move
+    for (const edgeCoord of node.edgesList) {
+
+      if (!node.visitedNodes.some((visitedCoord) => visitedCoord[0] === edgeCoord[0] && visitedCoord[1] === edgeCoord[1])) {
+
+        // Create a new node/knight piece for each possible move
+        const knight = createNewKnight(edgeCoord);
+
+        // Set its coordinate
+        knight.coord = edgeCoord;
+
+        // Store all its possible moves in its visitedNodes list
+        knight.edgesList = getPossibleMoves(edgeCoord);
+
+        // Add current coordinate to the visitedNodes list
+        knight.visitedNodes = [...node.visitedNodes, edgeCoord];
+
+        // Recursion
+        const result = this._buildGraph(knight, end, level + 1);
+
+        if (result !== null) {
+          return result; // Return the level if the goal is reached in this branch
+        }
+      }
+    }
+
+    return null; // Return null to indicate the goal was not reached in this branch
+  }
+}
+
+// Create new board
+function createNewBoard(nodes) {
+  return new Board(nodes);
 }
 
 export default function knightMoves(startingCoord, endCoord) {
