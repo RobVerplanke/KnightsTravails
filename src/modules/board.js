@@ -31,35 +31,45 @@ class Board {
     console.log('Startingnode:\n', node, '\n');
 
     // Check if end node excists in edges list
-    if (node.edgesList.some(checkCoord)) {
+    if (node.edgesList.some(checkEndCoord)) {
       console.log(`You made it in ${level + 1} moves! Here's your path:`);
-      console.log(node.visitedNodes, end);
+      console.log(...node.visitedNodes, end);
       return null;
     }
 
-    function checkCoord(coord) {
+    function checkEndCoord(coord) {
       return coord[0] === end[0] && coord[1] === end[1];
+    }
+
+    function checkVisistedNodes(visitedCoord, nodeCoord) {
+      console.log('test');
+      return visitedCoord[0] === nodeCoord[0] && visitedCoord[1] === nodeCoord[1];
     }
 
     // Itterate through each possible move
     for (const edgeCoord of node.edgesList) {
 
-      // Create a new node/knight peace for each possible move
-      const knight = createNewKnight(edgeCoord);
+      // If edgeList coord doesn't exist in visitedNodes
+      if (!node.visitedNodes.some(checkVisistedNodes, node.coord)) {
 
-      // Set its coorinate
-      knight.coord = edgeCoord;
+        // Create a new node/knight peace for each possible move
+        const knight = createNewKnight(edgeCoord);
 
-      // Store all its possible moves in its visitedNodes list
-      knight.edgesList = getPossibleMoves(edgeCoord);
+        // Set its coorinate
+        knight.coord = edgeCoord;
 
-      // Add current coordinate to the visitedNodes list
-      knight.visitedNodes.push(edgeCoord, ...node.visitedNodes);
+        // Store all its possible moves in its visitedNodes list
+        knight.edgesList = getPossibleMoves(edgeCoord);
 
-      console.log(knight, '\n');
+        // Add current coordinate to the visitedNodes list
+        knight.visitedNodes.push(...node.visitedNodes, edgeCoord);
 
-      // Recursion
-      this._buildGraph(knight, end, level + 1);
+        console.log(knight, '\n');
+
+        // Recursion
+        this._buildGraph(knight, end, level + 1);
+      }
+
     }
 
     return level;
