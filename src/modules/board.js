@@ -1,6 +1,31 @@
 /* eslint-disable max-len */
 /* eslint-disable indent */
 
+class Board {
+  constructor(size = 8) {
+    this.size = size;
+  }
+
+  // create a 2D array
+  newBoard() {
+    const newBoard = [];
+
+    for (let i = 0; i <= this.size; i++) {
+      newBoard[i] = [i];
+      for (let j = 0; j <= this.size; j++) {
+        newBoard[i][j] = [j];
+      }
+    }
+
+    return newBoard;
+    }
+
+}
+
+const Board1 = new Board();
+
+console.log(Board1.newBoard());
+
 export default function knightMoves(start, end) {
   console.log('start function knightMoves');
 
