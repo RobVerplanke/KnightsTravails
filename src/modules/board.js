@@ -2,24 +2,32 @@
 /* eslint-disable indent */
 
 class Board {
-  constructor(size = 8) {
-    this.size = size;
+  constructor() {
+    this.size = 8;
+    this.board = this.newBoard();
   }
 
   // create a 2D array
   newBoard() {
     const newBoard = [];
 
-    for (let i = 0; i <= this.size; i++) {
-      newBoard[i] = [i];
-      for (let j = 0; j <= this.size; j++) {
-        newBoard[i][j] = [j];
+    for (let i = 0; i < this.size; i++) {
+      newBoard[i] = [];
+      for (let j = 0; j < this.size; j++) {
+        newBoard[i][j] = 0;
       }
     }
 
     return newBoard;
-    }
+  }
 
+  validateCoord(coord) { // [5, 5]
+    const x = coord[0];
+    const y = coord[1];
+    const n = this.size;
+
+    return x >= 0 && x < n && y >= 0 && y < n;
+  }
 }
 
 const Board1 = new Board();
