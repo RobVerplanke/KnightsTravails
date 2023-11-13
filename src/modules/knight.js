@@ -21,4 +21,11 @@ export default class Knight {
   addVisitedNode(node) {
     this.visitedNodesList.push(node);
   }
+
+  getVisitedCoords() {
+    let coordList = [];
+    coordList = this.visitedNodesList.forEach((visitedNode) => visitedNode.currentPosition);
+    return coordList;
+  }
+
 }

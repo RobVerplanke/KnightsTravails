@@ -4,8 +4,8 @@
 import Knight from './knight.js';
 
 class Board {
-  constructor() {
-    this.size = 8;
+  constructor(size = 8) {
+    this.size = size;
     this.board = this.newBoard();
     this.knightDeltas = [
       [1, 2],
@@ -49,19 +49,20 @@ class Board {
 
   }
 
-  // Get a list of all valid possible coordinates, excluding visited nodes
+  // Get a list of all valid possible coordinates
   getPossibleMoves(node) {
     let possibleMoves = [];
     let validPossibleMoves = [];
     const { currentPosition, visitedNodesList } = node;
+    const visitedCoords = node.getVisitedCoords(visitedNodesList);
 
     // Calculate all possible coordinates with delta array
     possibleMoves = this.calculateDeltaMoves(currentPosition);
 
-    // Select coordinates that are on the board and not on the visited nodes list
-    validPossibleMoves = possibleMoves.filter((coord) => (
-      this.validateCoord(coord) && (!visitedNodesList.includes(coord))
-    ));
+    // Select coordinates that are on the board and not yet visited
+    validPossibleMoves = possibleMoves.filter(
+      (coord) => this.validateCoord(coord) && !visitedCoords.includes(coord),
+    );
 
     return validPossibleMoves; // Valid coordinates
   }
@@ -94,12 +95,12 @@ export default function knightMoves(start, end) {
 
   // Visit first node and add it to the visited nodes list
   knight.currentPosition = start;
-  knight.addVisitedNode(knight.currentPosition);
+  knight.addVisitedNode(knight);
 
   // Fill array with all valid possible coordinates
   board.setEdgesList(knight);
 
-  // Set the position of the Knight in the board array
+  // Set the position of the Knight in corresponding coordinates on the board array
   board.fillSquare(knight);
 
   console.log('Board representation: \n\n', board.board);
