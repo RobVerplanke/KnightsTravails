@@ -13,8 +13,8 @@ export default class Knight {
   }
 
   // Add possible move to edge list
-  addEdge(edge) {
-    this.edgesList.push(edge);
+  addEdge(edges) {
+    this.edgesList.push(...edges);
   }
 
   // Add a visited node to the visited nodes list

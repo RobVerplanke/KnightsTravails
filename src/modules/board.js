@@ -42,19 +42,38 @@ class Board {
     return x >= 0 && x < n && y >= 0 && y < n;
   }
 
-  getPossibleMoves(node) {
-    const possibleMoves = [];
-    const { visitedNodesList, edgesList } = node;
+  // Calculate each possible coordinate with the delta array
+  calculateDeltaMoves() {
 
-    for (const edge of edgesList) {
-      if (this.validateCoord(edge) && !visitedNodesList.contains(edge)) {
-        possibleMoves.push(edge);
-      }
-    }
+    // Return new moves
 
-    return possibleMoves;
   }
 
+  // Get a list of all valid possible coordinates, excluding visited nodes
+  getPossibleMoves(node) {
+    let possibleMoves = [];
+    let validPossibleMoves = [];
+    const { currentPosition, visitedNodesList } = node;
+
+    // Calculate all possible coordinates with delta array
+    possibleMoves = this.calculateDeltaMoves(currentPosition);
+
+    // Select coordinates that are on the board and not on the visited nodes list
+    validPossibleMoves = possibleMoves.filter((coord) => (
+      this.validateCoord(coord) && (!visitedNodesList.includes(coord))
+    ));
+
+    return validPossibleMoves; // Valid coordinates
+  }
+
+  setEdgesList(node) {
+    const currentNode = node;
+    const possibleMoves = this.getPossibleMoves(currentNode);
+
+    currentNode.edgesList = possibleMoves;
+  }
+
+  // Represent the position of the Knight piece as '1' on the board
   fillSquare(node) {
     const x = node.currentPosition[0];
     const y = node.currentPosition[1];
@@ -73,16 +92,19 @@ export default function knightMoves(start, end) {
   console.log('Endposition is on the board: ', board.validateCoord(end), '\n');
   console.log('Moving Knight to start position \n');
 
-  // Set starting coordinate as current coordinate and add it to visited nodes list
+  // Visit first node and add it to the visited nodes list
   knight.currentPosition = start;
   knight.addVisitedNode(knight.currentPosition);
 
-  // Represent the position of the Knight as '1' in the board array
+  // Fill array with all valid possible coordinates
+  board.setEdgesList(knight);
+
+  // Set the position of the Knight in the board array
   board.fillSquare(knight);
 
   console.log('Board representation: \n\n', board.board);
 
-  // check if coords exists in a size/dimensions property of the board object/class
+  // To do
 
   // Visit node
   // Add node to visited nodes list
