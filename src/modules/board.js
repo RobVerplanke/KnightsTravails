@@ -102,14 +102,15 @@ class Board {
     for (const edge of edgesList) {
 
       // Set properties of each edge
-      edge.endPosition = node.endPosition;
       edge.edgesList = this.getPossibleMoves(edge);
-      edge.visitedNodesList.push(node);
+      edge.addVisitedNode(node);
+      edge.addVisitedNode(edge);
 
       // Do the same for the edge node
+      // this.buildGraph(edge);
     }
+    return node;
   }
-
 }
 
 export default function knightMoves(start, end) {
@@ -120,6 +121,9 @@ export default function knightMoves(start, end) {
   // Create starting node
   const knight = new Knight(start, end);
 
+  // Add starting node to its visited nodes list
+  knight.addVisitedNode(knight);
+
   // Fill array with all valid possible coordinates
   board.setEdgesList(knight);
 
@@ -128,9 +132,6 @@ export default function knightMoves(start, end) {
 
   // create edgelist for each node in edgelist until end node is reached
   board.buildGraph(knight);
-
-  // Add starting node to its visited nodes list
-  knight.addVisitedNode(knight);
 
   //
   //

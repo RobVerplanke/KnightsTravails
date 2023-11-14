@@ -19,7 +19,7 @@ export default class Knight {
       currentPosition: node.currentPosition.slice(),
       edgesList: [...node.edgesList],
       visitedNodesList: [...node.visitedNodesList],
-      endPosition: [...node.visitedNodesList],
+      endPosition: [...node.endPosition],
 
     };
 
