@@ -1,4 +1,4 @@
 /* eslint-disable import/extensions */
 import knightMoves from './modules/board.js';
 
-knightMoves([4, 2], [3, 3]);
+knightMoves([0, 0], [3, 3]);

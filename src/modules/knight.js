@@ -31,7 +31,7 @@ export default class Knight {
 
   getVisitedCoords() {
     let coordList = [];
-    coordList = this.visitedNodesList.map((visitedNode) => visitedNode.currentPosition);
+    coordList = this.visitedNodesList.map((node) => node.currentPosition);
     return coordList;
   }
 

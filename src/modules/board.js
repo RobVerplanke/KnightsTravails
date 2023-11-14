@@ -29,7 +29,6 @@ class Board {
         newBoard[i][j] = 0;
       }
     }
-
     return newBoard;
   }
 
@@ -59,10 +58,10 @@ class Board {
     let validPossibleCoords = [];
     let validPossibleNodes = [];
 
-    const { currentPosition, visitedNodesList } = node;
+    const { currentPosition } = node;
 
     // Convert visited nodes to visited coords
-    const visitedCoords = node.getVisitedCoords(visitedNodesList);
+    const visitedCoords = node.getVisitedCoords();
 
     // Calculate all possible coordinates with delta array
     possibleCoords = this.calculateDeltaMoves(currentPosition);
@@ -78,11 +77,10 @@ class Board {
     return validPossibleNodes;
   }
 
+  // Set edge nodes in edgesList
   setEdgesList(node) {
     const currentNode = node;
     const possibleNodes = this.getPossibleMoves(currentNode);
-
-    // store nodes, not coords
 
     currentNode.edgesList = possibleNodes;
   }
@@ -96,18 +94,22 @@ class Board {
   }
 
   buildGraph(node) {
+    const { edgesList } = node;
+
+    // voor iedere node in edgelist: pak de edgelist en maak nieuwe node aan
+    // herhaal tot eind coord is bereikt
 
   }
 }
 
-const board = new Board();
-const knight = new Knight();
-
 export default function knightMoves(start, end) {
 
-  // Visit first node and add it to the visited nodes list
-  knight.currentPosition = start;
-  knight.endPosition = end;
+  // Create new board
+  const board = new Board();
+
+  // Create first node and add it to its visited nodes list
+  const knight = new Knight(start, end);
+
   knight.addVisitedNode(knight);
 
   // Fill array with all valid possible coordinates
@@ -116,9 +118,14 @@ export default function knightMoves(start, end) {
   // Set the position of the Knight in corresponding coordinates on the board array
   board.fillSquare(knight);
 
-  // create edgelist for eacht node in edgelist until end node is reached
-  // board.buildGraph(knight);
+  // create edgelist for each node in edgelist until end node is reached
+  board.buildGraph(knight);
 
+  //
+  //
+  //
+  //
+  //
   // Console log
 
   console.log('Board representation: \n\n', board.board);
@@ -129,6 +136,7 @@ export default function knightMoves(start, end) {
   if (knight.edgesList.length > 0) {
     console.log('Edges List:');
     knight.edgesList.forEach((edge) => {
+      console.log('  \n Edge Node:');
       console.log('  Current Position:', edge.currentPosition);
       console.log('  Edges List:', edge.edgesList);
       console.log('  Visited Nodes List:', edge.visitedNodesList);
