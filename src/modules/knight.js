@@ -13,17 +13,14 @@ export default class Knight {
     this.currentPosition = newPosition;
   }
 
-  // Add possible move to edge list
-  addEdge(edges) {
-    this.edgesList.push(...edges);
-  }
-
   // Add a visited node to the visited nodes list
   addVisitedNode(node) {
     const newNode = {
       currentPosition: node.currentPosition.slice(),
       edgesList: [...node.edgesList],
       visitedNodesList: [...node.visitedNodesList],
+      endPosition: [...node.visitedNodesList],
+
     };
 
     this.visitedNodesList.push(newNode);

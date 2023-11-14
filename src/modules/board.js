@@ -6,7 +6,7 @@ import Knight from './knight.js';
 class Board {
   constructor(size = 8) {
     this.size = size;
-    this.board = this.newBoard();
+    this.board = this.createBoard();
     this.knightDeltas = [
       [1, 2],
       [1, -2],
@@ -20,7 +20,7 @@ class Board {
   }
 
   // create a 2D array
-  newBoard() {
+  createBoard() {
     const newBoard = [];
 
     for (let i = 0; i < this.size; i++) {
@@ -72,7 +72,7 @@ class Board {
     );
 
     // Convert each valid coord to a new node
-    validPossibleNodes = validPossibleCoords.map((coord) => new Knight(coord));
+    validPossibleNodes = validPossibleCoords.map((coord) => new Knight(coord, node.endPosition));
 
     return validPossibleNodes;
   }
@@ -80,8 +80,11 @@ class Board {
   // Set edge nodes in edgesList
   setEdgesList(node) {
     const currentNode = node;
+
+    // Get all possible nodes
     const possibleNodes = this.getPossibleMoves(currentNode);
 
+    // Add all possible nodes to its edges list
     currentNode.edgesList = possibleNodes;
   }
 
@@ -96,10 +99,17 @@ class Board {
   buildGraph(node) {
     const { edgesList } = node;
 
-    // voor iedere node in edgelist: pak de edgelist en maak nieuwe node aan
-    // herhaal tot eind coord is bereikt
+    for (const edge of edgesList) {
 
+      // Set properties of each edge
+      edge.endPosition = node.endPosition;
+      edge.edgesList = this.getPossibleMoves(edge);
+      edge.visitedNodesList.push(node);
+
+      // Do the same for the edge node
+    }
   }
+
 }
 
 export default function knightMoves(start, end) {
@@ -107,10 +117,8 @@ export default function knightMoves(start, end) {
   // Create new board
   const board = new Board();
 
-  // Create first node and add it to its visited nodes list
+  // Create starting node
   const knight = new Knight(start, end);
-
-  knight.addVisitedNode(knight);
 
   // Fill array with all valid possible coordinates
   board.setEdgesList(knight);
@@ -121,6 +129,9 @@ export default function knightMoves(start, end) {
   // create edgelist for each node in edgelist until end node is reached
   board.buildGraph(knight);
 
+  // Add starting node to its visited nodes list
+  knight.addVisitedNode(knight);
+
   //
   //
   //
@@ -128,23 +139,23 @@ export default function knightMoves(start, end) {
   //
   // Console log
 
-  console.log('Board representation: \n\n', board.board);
+  // console.log('Board representation: \n\n', board.board);
 
   console.log('Knight:');
   console.log('Current Position:', knight.currentPosition);
+  console.log('End Position:', knight.endPosition);
 
   if (knight.edgesList.length > 0) {
-    console.log('Edges List:');
+    console.log('Edges List: \n');
     knight.edgesList.forEach((edge) => {
-      console.log('  \n Edge Node:');
+      console.log('  Edge Node:');
       console.log('  Current Position:', edge.currentPosition);
+      console.log('  End Position:', edge.endPosition);
       console.log('  Edges List:', edge.edgesList);
       console.log('  Visited Nodes List:', edge.visitedNodesList);
-      console.log('  ----------------------------');
+      console.log('  ----------------------------\n ');
     });
   }
-
-  console.log('Visited Nodes List:', knight.visitedNodesList);
 
   // use BFS to find shortest path
 
