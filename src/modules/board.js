@@ -43,35 +43,48 @@ class Board {
   }
 
   // Calculate each possible coordinate with the delta array
-  calculateDeltaMoves() {
+  calculateDeltaMoves(coord) {
+    let possibleCoords = [];
+    const x = coord[0];
+    const y = coord[1];
 
-    // Return new moves
+    possibleCoords = this.knightDeltas.map((delta) => [x + delta[0], y + delta[1]]);
 
+    return possibleCoords;
   }
 
   // Get a list of all valid possible coordinates
   getPossibleMoves(node) {
-    let possibleMoves = [];
-    let validPossibleMoves = [];
+    let possibleCoords = [];
+    let validPossibleCoords = [];
+    let validPossibleNodes = [];
+
     const { currentPosition, visitedNodesList } = node;
+
+    // Convert visited nodes to visited coords
     const visitedCoords = node.getVisitedCoords(visitedNodesList);
 
     // Calculate all possible coordinates with delta array
-    possibleMoves = this.calculateDeltaMoves(currentPosition);
+    possibleCoords = this.calculateDeltaMoves(currentPosition);
 
     // Select coordinates that are on the board and not yet visited
-    validPossibleMoves = possibleMoves.filter(
+    validPossibleCoords = possibleCoords.filter(
       (coord) => this.validateCoord(coord) && !visitedCoords.includes(coord),
     );
 
-    return validPossibleMoves; // Valid coordinates
+    // Convert each valid coord to a new node
+    validPossibleNodes = validPossibleCoords.map((coord) => new Knight(coord));
+
+    return validPossibleNodes;
   }
 
   setEdgesList(node) {
     const currentNode = node;
-    const possibleMoves = this.getPossibleMoves(currentNode);
+    const possibleNodes = this.getPossibleMoves(currentNode);
 
-    currentNode.edgesList = possibleMoves;
+    // store nodes, not coords
+
+    currentNode.edgesList = possibleNodes;
   }
 
   // Represent the position of the Knight piece as '1' on the board
@@ -81,20 +94,20 @@ class Board {
 
     this.board[x][y] = 1;
   }
+
+  buildGraph(node) {
+
+  }
 }
 
 const board = new Board();
 const knight = new Knight();
 
 export default function knightMoves(start, end) {
-  console.log('start function knightMoves \n');
-
-  console.log('Startposition is on the board: ', board.validateCoord(start));
-  console.log('Endposition is on the board: ', board.validateCoord(end), '\n');
-  console.log('Moving Knight to start position \n');
 
   // Visit first node and add it to the visited nodes list
   knight.currentPosition = start;
+  knight.endPosition = end;
   knight.addVisitedNode(knight);
 
   // Fill array with all valid possible coordinates
@@ -103,17 +116,27 @@ export default function knightMoves(start, end) {
   // Set the position of the Knight in corresponding coordinates on the board array
   board.fillSquare(knight);
 
+  // create edgelist for eacht node in edgelist until end node is reached
+  // board.buildGraph(knight);
+
+  // Console log
+
   console.log('Board representation: \n\n', board.board);
 
-  // To do
+  console.log('Knight:');
+  console.log('Current Position:', knight.currentPosition);
 
-  // Visit node
-  // Add node to visited nodes list
-  // calculate possible moves
-  // Check if possible move is already visited
-  // Store valid possible moves to a list
-  // visit next moves
-  // repeat these steps until end node is reached
+  if (knight.edgesList.length > 0) {
+    console.log('Edges List:');
+    knight.edgesList.forEach((edge) => {
+      console.log('  Current Position:', edge.currentPosition);
+      console.log('  Edges List:', edge.edgesList);
+      console.log('  Visited Nodes List:', edge.visitedNodesList);
+      console.log('  ----------------------------');
+    });
+  }
+
+  console.log('Visited Nodes List:', knight.visitedNodesList);
 
   // use BFS to find shortest path
 
