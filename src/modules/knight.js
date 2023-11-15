@@ -26,10 +26,9 @@ export default class Knight {
     this.visitedNodesList.push(newNode);
   }
 
+  // Convert nodes to coordinates as string
   getVisitedCoords() {
-    let coordList = [];
-    coordList = this.visitedNodesList.map((node) => node.currentPosition);
-    return coordList;
+    return this.visitedNodesList.map((node) => node.currentPosition.toString());
   }
 
 }

@@ -68,7 +68,7 @@ class Board {
 
     // Select coordinates that are on the board and not yet visited
     validPossibleCoords = possibleCoords.filter(
-      (coord) => this.validateCoord(coord) && !visitedCoords.includes(coord),
+      (coord) => this.validateCoord(coord) && !visitedCoords.includes(coord.toString()),
     );
 
     // Convert each valid coord to a new node
@@ -97,17 +97,18 @@ class Board {
   }
 
   buildGraph(node) {
+
     const { edgesList } = node;
 
     for (const edge of edgesList) {
 
       // Set properties of each edge
-      edge.edgesList = this.getPossibleMoves(edge);
+
       edge.addVisitedNode(node);
       edge.addVisitedNode(edge);
+      edge.edgesList = this.getPossibleMoves(edge);
 
-      // Do the same for the edge node
-      // this.buildGraph(edge);
+      // Do the same for the edge nodes
     }
     return node;
   }
@@ -142,21 +143,21 @@ export default function knightMoves(start, end) {
 
   // console.log('Board representation: \n\n', board.board);
 
-  console.log('Knight:');
-  console.log('Current Position:', knight.currentPosition);
-  console.log('End Position:', knight.endPosition);
+  // console.log('Knight:');
+  // console.log('Current Position:', knight.currentPosition);
+  // console.log('End Position:', knight.endPosition);
 
-  if (knight.edgesList.length > 0) {
-    console.log('Edges List: \n');
-    knight.edgesList.forEach((edge) => {
-      console.log('  Edge Node:');
-      console.log('  Current Position:', edge.currentPosition);
-      console.log('  End Position:', edge.endPosition);
-      console.log('  Edges List:', edge.edgesList);
-      console.log('  Visited Nodes List:', edge.visitedNodesList);
-      console.log('  ----------------------------\n ');
-    });
-  }
+  // if (knight.edgesList.length > 0) {
+  //   console.log('Edges List: \n');
+  //   knight.edgesList.forEach((edge) => {
+  //     console.log('  Edge Node:');
+  //     console.log('  Current Position:', edge.currentPosition);
+  //     console.log('  End Position:', edge.endPosition);
+  //     console.log('  Edges List:', edge.edgesList);
+  //     console.log('  Visited Nodes List:', edge.visitedNodesList);
+  //     console.log('  ----------------------------\n ');
+  //   });
+  // }
 
   // use BFS to find shortest path
 
