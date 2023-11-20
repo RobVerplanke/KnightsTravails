@@ -65,6 +65,22 @@ export default class Board {
 
   // Get a list of all valid possible nodes
   getPossibleMoves(node) {
+
+    // If there aren't any nodes left to explore, return
+    if (!node) {
+      console.log('no nodes left');
+      return;
+    }
+
+    // Check if end position is reached
+    if (node.currentPosition.every((val, index) => val === node.endPosition[index])) {
+      console.log('\n end node found! : \n\n', node);
+      return;
+
+    }
+
+    console.log('Node: \n', node);
+
     const currentNode = node;
 
     let possibleCoords = [];
@@ -74,7 +90,7 @@ export default class Board {
     currentNode.visitedNodesList.push(currentNode.currentPosition.toString());
 
     // Calculate all possible coordinates with delta array
-    possibleCoords = this.calculateDeltaMoves(currentNode.currentPosition); // Array items
+    possibleCoords = this.calculateDeltaMoves(currentNode.currentPosition);
 
     // Select valid coordinates and convert them to nodes
     validPossibleNodes = this.ConvertValidCoordsToNodes(possibleCoords, currentNode);
@@ -85,24 +101,8 @@ export default class Board {
     );
     currentNode.edgesList = validPossibleNodes;
 
-    // Check if end position is reached
-    if (possibleCoords.toString().includes(node.endPosition.toString())) {
-      console.log('edge gevonden! \n');
-      console.log(node);
-
-      return node;
-    }
     // Recursive call
     this.getPossibleMoves(...currentNode.edgesList);
-    //
-    //
-    // log
-
-    // console.log('current node: \n \n', currentNode, '\n \n');
-    // console.log('edges: \n \n');
-
-    // currentNode.edgesList.forEach((edge) => console.log('edge: ', edge, '\n'));
-    return node;
 
   }
 

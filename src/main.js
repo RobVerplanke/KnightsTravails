@@ -7,9 +7,11 @@ const board = new Board();
 
 function knightMoves(start, end) {
 
-  // First validate the coords
-  board.validateCoord(start);
-  board.validateCoord(end);
+  // Validate the coords
+  if (!board.validateCoord(start) || !board.validateCoord(end)) {
+    console.log('Invalid coordinate!');
+    return;
+  }
 
   // Create starting node
   const knight = new Knight(start, end);
@@ -21,4 +23,4 @@ function knightMoves(start, end) {
 
 }
 
-knightMoves([0, 0], [7, 7]);
+knightMoves([0, 0], [5, 7]);

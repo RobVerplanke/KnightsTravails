@@ -5,10 +5,4 @@ export default class Knight {
     this.visitedNodesList = [];
     this.endPosition = endPosition;
   }
-
-  // Return currentPosition coordinates as string
-  formatCoords() {
-    return this.visitedNodesList.map((node) => node.currentPosition.toString());
-  }
-
 }
