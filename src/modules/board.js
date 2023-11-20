@@ -2,6 +2,10 @@
 /* eslint-disable no-restricted-syntax */
 import Knight from './knight.js';
 
+function convertCoordsToNodes(coords, node) {
+  return coords.map((coord) => new Knight(coord, node.endPosition));
+}
+
 export default class Board {
   constructor(size = 8) {
     this.size = size;
@@ -51,7 +55,12 @@ export default class Board {
     return possibleCoords;
   }
 
-  // Get a list of all valid possible coordinates
+  filterValidCoords(coords, currentNode) {
+    return coords.filter((coord) => this.validateCoord(coord)
+       && !currentNode.visitedNodesList.includes(coord.toString()));
+  }
+
+  // Get a list of all valid possible nodes
   getPossibleMoves(node) {
     const currentNode = node;
 
@@ -59,31 +68,34 @@ export default class Board {
     let validPossibleCoords = [];
     let validPossibleNodes = [];
 
-    // Set current position as a visited coordinate, as string
+    // Set current position as a visited coordinate, as a string
     currentNode.visitedNodesList.push(currentNode.currentPosition.toString());
 
     // Calculate all possible coordinates with delta array
-    possibleCoords = this.calculateDeltaMoves(currentNode.currentPosition);
+    possibleCoords = this.calculateDeltaMoves(currentNode.currentPosition); // Array items
 
     // Select coordinates that are on the board and not yet visited
-    validPossibleCoords = possibleCoords.filter(
-      (coord) => this.validateCoord(coord)
-       && !currentNode.visitedNodesList.includes(coord.toString()),
-    );
+    validPossibleCoords = this.filterValidCoords(possibleCoords, currentNode);
 
     // Convert each valid coord to a new node
-    validPossibleNodes = validPossibleCoords.map(
-      (coord) => new Knight(coord, currentNode.endPosition),
-    );
+    validPossibleNodes = convertCoordsToNodes(validPossibleCoords, currentNode);
 
     // Push coordinate of current node to visitedNodesList of each edge
     validPossibleNodes.forEach((validNode) => validNode.visitedNodesList.push(
-      currentNode.currentPosition.toString(),
+      currentNode.visitedNodesList,
     ));
 
+    // Set all valid possible nodes
     currentNode.edgesList = validPossibleNodes;
 
-    console.log(currentNode);
+    //
+    //
+    // log
+
+    console.log('current node: \n \n', currentNode, '\n \n');
+    console.log('edges: \n \n');
+
+    currentNode.edgesList.forEach((edge) => console.log('edge: ', edge, '\n'));
 
   }
 
