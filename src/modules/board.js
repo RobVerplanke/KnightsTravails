@@ -55,9 +55,12 @@ export default class Board {
     return possibleCoords;
   }
 
-  filterValidCoords(coords, currentNode) {
-    return coords.filter((coord) => this.validateCoord(coord)
+  ConvertValidCoordsToNodes(coords, currentNode) {
+    const validPossibleCoords = coords.filter((coord) => this.validateCoord(coord)
        && !currentNode.visitedNodesList.includes(coord.toString()));
+
+    // Return list of nodes
+    return convertCoordsToNodes(validPossibleCoords, currentNode);
   }
 
   // Get a list of all valid possible nodes
@@ -65,37 +68,41 @@ export default class Board {
     const currentNode = node;
 
     let possibleCoords = [];
-    let validPossibleCoords = [];
     let validPossibleNodes = [];
 
-    // Set current position as a visited coordinate, as a string
+    // Push current position to visited coordinates list, as a string
     currentNode.visitedNodesList.push(currentNode.currentPosition.toString());
 
     // Calculate all possible coordinates with delta array
     possibleCoords = this.calculateDeltaMoves(currentNode.currentPosition); // Array items
 
-    // Select coordinates that are on the board and not yet visited
-    validPossibleCoords = this.filterValidCoords(possibleCoords, currentNode);
+    // Select valid coordinates and convert them to nodes
+    validPossibleNodes = this.ConvertValidCoordsToNodes(possibleCoords, currentNode);
 
-    // Convert each valid coord to a new node
-    validPossibleNodes = convertCoordsToNodes(validPossibleCoords, currentNode);
-
-    // Push coordinate of current node to visitedNodesList of each edge
-    validPossibleNodes.forEach((validNode) => validNode.visitedNodesList.push(
-      currentNode.visitedNodesList,
-    ));
-
-    // Set all valid possible nodes
+    // Add visited nodes from current node to the visited nodes list of each edge
+    validPossibleNodes.forEach(
+      (validNode) => validNode.visitedNodesList.push(...currentNode.visitedNodesList),
+    );
     currentNode.edgesList = validPossibleNodes;
 
+    // Check if end position is reached
+    if (possibleCoords.toString().includes(node.endPosition.toString())) {
+      console.log('edge gevonden! \n');
+      console.log(node);
+
+      return node;
+    }
+    // Recursive call
+    this.getPossibleMoves(...currentNode.edgesList);
     //
     //
     // log
 
-    console.log('current node: \n \n', currentNode, '\n \n');
-    console.log('edges: \n \n');
+    // console.log('current node: \n \n', currentNode, '\n \n');
+    // console.log('edges: \n \n');
 
-    currentNode.edgesList.forEach((edge) => console.log('edge: ', edge, '\n'));
+    // currentNode.edgesList.forEach((edge) => console.log('edge: ', edge, '\n'));
+    return node;
 
   }
 
