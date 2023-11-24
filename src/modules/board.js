@@ -13,10 +13,17 @@ export default class Board {
     ];
   }
 
+  // Calculate possible moves with delta array
+  getPossibleNodes(node) {
+    const x = node[0];
+    const y = node[1];
+    return this.knightDeltas.map((delta) => [x + delta[0], y + delta[1]]);
+  }
+
   // Check if coordinate is on the board
-  validateCoord(coord) {
-    const x = coord[0];
-    const y = coord[1];
+  validateCoord(edge) {
+    const x = edge[0];
+    const y = edge[1];
     const n = this.size;
 
     return x >= 0 && x < n && y >= 0 && y < n;
@@ -24,10 +31,18 @@ export default class Board {
 
   // Calculate each possible coordinate with the delta array
   getValidMoves(key) {
-    const currentCoord = key;
-    const x = currentCoord[0];
-    const y = currentCoord[1];
+    const node = key;
+    const validMoves = [];
+    let possibleNodes = [];
 
-    return this.knightDeltas.map((delta) => [x + delta[0], y + delta[1]]);
+    // Get possible edge nodes
+    possibleNodes = this.getPossibleNodes(node);
+
+    // Store all nodes with validated coordinates
+    possibleNodes.forEach((move) => {
+      if (this.validateCoord(move) === true) validMoves.push(move);
+    });
+
+    return validMoves;
   }
 }

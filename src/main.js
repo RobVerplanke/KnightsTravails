@@ -4,11 +4,11 @@ import Board from './modules/board.js';
 const board = new Board();
 const graph = new Map();
 
-// Fill map with board coordinates
+// Create nodes with its coordinates as key value
 function populateSquares() {
   for (let i = 0; i < board.size; i++) {
     for (let j = 0; j < board.size; j++) {
-      graph.set(`${i},${j}`, null);
+      graph.set([i, j], null);
     }
   }
 }
