@@ -17,11 +17,12 @@ export default class Board {
   getPossibleNodes(node) {
     const x = node[0];
     const y = node[1];
+
     return this.knightDeltas.map((delta) => [x + delta[0], y + delta[1]]);
   }
 
   // Check if coordinate is on the board
-  validateCoord(edge) {
+  isValidCoord(edge) {
     const x = edge[0];
     const y = edge[1];
     const n = this.size;
@@ -40,7 +41,7 @@ export default class Board {
 
     // Store all nodes with validated coordinates
     possibleNodes.forEach((move) => {
-      if (this.validateCoord(move) === true) validMoves.push(move);
+      if (this.isValidCoord(move)) validMoves.push(move);
     });
 
     return validMoves;
