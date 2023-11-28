@@ -9,12 +9,12 @@ const adjacencyList = new AdjacencyList();
 function populateSquares() {
   for (let i = 0; i < board.size; i++) {
     for (let j = 0; j < board.size; j++) {
-      adjacencyList.graph.set([i, j], board.getValidMoves([i, j]));
+      adjacencyList.graph.set(`${i},${j}`, board.getValidMoves([i, j]));
     }
   }
 }
 
-// Set nodes/ create graph (adjadency list)
+// Set nodes/ fill graph (adjadency list)
 populateSquares();
 
 function knightMoves(start, end) {
@@ -24,7 +24,11 @@ function knightMoves(start, end) {
 
   // Search shortes path with BFS
 
+  // console.log(adjacencyList.graph);
+
+  adjacencyList.bfsTraversal(start, end);
+
   return null; // temp
 }
 
-knightMoves([0, 1], [3, 3]);
+knightMoves([3, 1], [3, 3]);
