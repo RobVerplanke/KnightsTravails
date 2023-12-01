@@ -21,10 +21,3 @@ populateSquares();
 const start = [3, 3];
 
 adjacencyList.bfs(start);
-
-// const key = [3, 3];
-// const nodeValue = adjacencyList.graph.get(JSON.stringify(key));
-
-// console.log('node value: ', nodeValue);
-
-// console.log(adjacencyList.graph.get(JSON.stringify([3, 3])));
