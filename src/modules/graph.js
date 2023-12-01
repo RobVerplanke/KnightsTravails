@@ -3,33 +3,34 @@ export default class Graph {
     this.graph = new Map();
   }
 
-  bfs(start) {
+  bfs(start, end) {
     let currentNode = start;
+    const endNode = end;
     console.log('currentNode: ', currentNode);
+    console.log('end node: ', endNode);
 
-    // const visited = new Set();
+    const visited = new Set();
     const queue = [];
     const result = [];
 
     // Push starting node to queue
     queue.push(currentNode);
-    console.log('queue: ', queue);
 
-    // while (queue.length) {
+    while (queue.length) {
 
-    // Get first item from te queue
-    currentNode = queue.shift();
-    console.log('new currentNode: ', currentNode);
+      // If node is equal to the end node, return result
+      if (JSON.stringify(currentNode) === JSON.stringify(endNode)) { return console.log('end node found! \nResult: ', visited); }
 
-    // Push current node to the result list
-    result.push(currentNode);
-    console.log('result: ', result);
+      // Get first item from te queue
+      currentNode = queue.shift();
 
-    // Push value of current node to te queue
-    queue.push(this.graph.get(JSON.stringify(currentNode)));
-    console.log('new queue: ', queue);
+      // Push current node to the result list
+      result.push(currentNode);
+      visited.add(currentNode);
 
-    // }
+      // Push value of current node to te queue
+      queue.push(...this.graph.get(JSON.stringify(currentNode)));
+
+    }
   }
-
 }
