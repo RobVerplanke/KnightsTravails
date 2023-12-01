@@ -1,39 +1,35 @@
-export default class Adjacencylist {
+export default class Graph {
   constructor() {
     this.graph = new Map();
   }
 
-  // bfs(value) {
-  //   return this.bfsTraversal(this.graph, value);
-  // }
+  bfs(start) {
+    let currentNode = start;
+    console.log('currentNode: ', currentNode);
 
-  bfsTraversal(start, end) {
-
-    console.log('start: ', start);
-    console.log('end: ', end);
-
-    if (start.join(',') === end.join(',')) return console.log('Found!');
-
+    // const visited = new Set();
     const queue = [];
+    const result = [];
 
-    // Push startintpoint in queue as string
-    queue.push(start.join(','));
+    // Push starting node to queue
+    queue.push(currentNode);
+    console.log('queue: ', queue);
 
-    // while (queue) {
-    console.log('queue', (queue));
+    // while (queue.length) {
 
-    // Push values of node to queue list as strings
-    queue.push(...this.graph.get(queue[0]).map((coord) => coord.join(',')));
+    // Get first item from te queue
+    currentNode = queue.shift();
+    console.log('new currentNode: ', currentNode);
 
-    // Remove first queue item
-    queue.shift();
+    // Push current node to the result list
+    result.push(currentNode);
+    console.log('result: ', result);
 
-    console.log('queue', queue);
+    // Push value of current node to te queue
+    queue.push(this.graph.get(JSON.stringify(currentNode)));
+    console.log('new queue: ', queue);
 
     // }
-    // — Begin at the source node and enqueue it.
-    // — Dequeue a node, visit its neighbors, and enqueue them.
-    // — Continue this process until all reachable nodes are visited.
-
   }
+
 }

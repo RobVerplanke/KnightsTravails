@@ -1,34 +1,30 @@
 /* eslint-disable import/extensions */
 import Board from './modules/board.js';
-import AdjacencyList from './modules/graph.js';
+import Graph from './modules/graph.js';
 
 const board = new Board();
-const adjacencyList = new AdjacencyList();
+const adjacencyList = new Graph();
 
-// Create nodes with its coordinates as key and posibble moves as value
+// Create nodes with its coordinates as key and possible moves as value
 function populateSquares() {
   for (let i = 0; i < board.size; i++) {
     for (let j = 0; j < board.size; j++) {
-      adjacencyList.graph.set(`${i},${j}`, board.getValidMoves([i, j]));
+      const key = JSON.stringify([i, j]); // Convert array to string
+      adjacencyList.graph.set(key, board.getValidMoves([i, j]));
     }
   }
 }
 
-// Set nodes/ fill graph (adjadency list)
+// Fill graph with nodes
 populateSquares();
 
-function knightMoves(start, end) {
+const start = [3, 3];
 
-  // Validate coordinates
-  if (!board.isValidCoord(start) || !board.isValidCoord(end)) return console.log('Invalid coordinates!');
+adjacencyList.bfs(start);
 
-  // Search shortes path with BFS
+// const key = [3, 3];
+// const nodeValue = adjacencyList.graph.get(JSON.stringify(key));
 
-  // console.log(adjacencyList.graph);
+// console.log('node value: ', nodeValue);
 
-  adjacencyList.bfsTraversal(start, end);
-
-  return null; // temp
-}
-
-knightMoves([3, 1], [3, 3]);
+// console.log(adjacencyList.graph.get(JSON.stringify([3, 3])));
