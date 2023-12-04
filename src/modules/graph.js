@@ -20,9 +20,9 @@ export default class Graph {
   }
 
   // Check if coordinate is on the board
-  isValidEdge(node) {
-    const x = node.value[0];
-    const y = node.value[1];
+  isValidCoord(coord) {
+    const x = coord[0];
+    const y = coord[1];
     const n = this.size;
 
     return x >= 0 && x < n && y >= 0 && y < n;
@@ -32,9 +32,11 @@ export default class Graph {
   getPossibleEdges(node) {
     const x = node.value[0];
     const y = node.value[1];
-    const possibleEdges = [this.deltas.map((delta) => [x + delta[0], y + delta[1]])];
-    const validPossibleEdges = possibleEdges.filter((edge) => this.isValidEdge());
 
-    return validPossibleEdges;
+    const validCoords = this.deltas
+      .map((delta) => [x + delta[0], y + delta[1]])
+      .filter((move) => this.isValidCoord(move));
+
+    return validCoords;
   }
 }
