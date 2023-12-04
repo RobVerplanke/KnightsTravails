@@ -1,3 +1,6 @@
+/* eslint-disable import/extensions */
+import Node from './node.js';
+
 export default class Graph {
   constructor() {
     this.size = 8;
@@ -29,7 +32,7 @@ export default class Graph {
   }
 
   // Calculate possible moves with delta array
-  getPossibleEdges(node) {
+  getPossibleCoords(node) {
     const x = node.value[0];
     const y = node.value[1];
 
@@ -39,4 +42,19 @@ export default class Graph {
 
     return validCoords;
   }
+
+  // Convert valid possible coordinates to nodes
+  getEdges(node) {
+    const possibleCoords = this.getPossibleCoords(node);
+
+    const edgeNodes = possibleCoords
+      .map((coord) => this.getNodeByCoordinates(coord) || new Node(coord));
+
+    return edgeNodes;
+  }
+
+  getNodeByCoordinates(coord) {
+    return this.nodes.find((node) => node.value[0] === coord[0] && node.value[1] === coord[1]);
+  }
+
 }

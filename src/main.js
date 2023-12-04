@@ -7,11 +7,9 @@ const graph = new Graph();
 for (let i = 0; i < graph.size; i++) {
   for (let j = 0; j < graph.size; j++) {
     const newNode = new Node([i, j]);
-    newNode.edgesList = graph.getPossibleEdges(newNode);
+    newNode.edgesList = graph.getEdges(newNode);
     graph.addNode(newNode);
   }
 }
 
-graph.nodes.forEach((node) => {
-  console.log('node value: ', node.value, '\nnode edgesList: ', node.edgesList);
-});
+console.log(graph.nodes);
