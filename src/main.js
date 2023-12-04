@@ -1,27 +1,21 @@
 /* eslint-disable import/extensions */
-import Board from './modules/board.js';
 import Graph from './modules/graph.js';
 import Node from './modules/node.js';
 
-const board = new Board();
-const adjacencyList = new Graph();
+const graph = new Graph();
 
-// Create nodes with its coordinates as key and possible moves as value
-function populateSquares() {
-  for (let i = 0; i < board.size; i++) {
-    for (let j = 0; j < board.size; j++) {
-      const key = JSON.stringify([i, j]); // Convert array to string
-      adjacencyList.graph.set(new Node(key, board.getValidMoves([i, j])));
-    }
+for (let i = 0; i < graph.size; i++) {
+  for (let j = 0; j < graph.size; j++) {
+    const newNode = new Node([i, j], []);
+    newNode.edgesList = graph.getPossibleEdges(newNode);
+    graph.addNode(newNode);
   }
 }
 
-// Fill graph with nodes
-populateSquares();
+// graph.nodes.forEach((node) => console.log('node: ', node.value, '\n'));
 
-const start = [0, 0];
-const end = [3, 3];
+graph.nodes.forEach((node) => {
+  console.log('node value: ', node.value, '\nnode edgesList: ', node.edgesList);
+});
 
-console.log(adjacencyList.graph);
-
-// adjacencyList.bfs(start, end);
+// console.log('graph.nodes: ', graph.nodes);

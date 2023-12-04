@@ -1,36 +1,40 @@
 export default class Graph {
   constructor() {
-    this.graph = new Map();
+    this.size = 8;
+    this.nodes = [];
+    this.deltas = [
+      [1, 2],
+      [1, -2],
+      [2, 1],
+      [2, -1],
+      [-1, 2],
+      [-1, -2],
+      [-2, 1],
+      [-2, -1],
+    ];
   }
 
-  bfs(start, end) {
-    let currentNode = start;
-    const endNode = end;
-    console.log('currentNode: ', currentNode);
-    console.log('end node: ', endNode);
+  // Add new node to graph
+  addNode(node) {
+    this.nodes.push(node);
+  }
 
-    const visited = new Set();
-    const queue = [];
-    const result = [];
+  // Check if coordinate is on the board
+  isValidEdge(node) {
+    const x = node.value[0];
+    const y = node.value[1];
+    const n = this.size;
 
-    // Push starting node to queue
-    queue.push(currentNode);
+    return x >= 0 && x < n && y >= 0 && y < n;
+  }
 
-    while (queue.length) {
+  // Calculate possible moves with delta array
+  getPossibleEdges(node) {
+    const x = node.value[0];
+    const y = node.value[1];
+    const possibleEdges = [this.deltas.map((delta) => [x + delta[0], y + delta[1]])];
+    const validPossibleEdges = possibleEdges.filter((edge) => this.isValidEdge());
 
-      // If node is equal to the end node, return result
-      if (JSON.stringify(currentNode) === JSON.stringify(endNode)) { return console.log('end node found! \nResult: ', visited); }
-
-      // Get first item from te queue
-      currentNode = queue.shift();
-
-      // Push current node to the result list
-      result.push(currentNode);
-      visited.add(currentNode);
-
-      // Push value of current node to te queue
-      queue.push(...this.graph.get(JSON.stringify(currentNode)));
-
-    }
+    return validPossibleEdges;
   }
 }

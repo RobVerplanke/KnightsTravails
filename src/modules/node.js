@@ -1,7 +1,6 @@
-export default class node {
-  constructor(start, edges) {
-    this.value = start;
-    this.edgesList = edges;
-    this.path = [];
+export default class Node {
+  constructor(value, edges) {
+    this.value = value;
+    this.edgesList = [edges];
   }
 }
