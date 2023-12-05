@@ -53,16 +53,6 @@ export default class Graph {
     return validCoords;
   }
 
-  // Get possible moves (coordinates) and add the corresponding nodes in the edgesList
-  getEdges(node) {
-    const possibleCoords = this.getPossibleCoords(node);
-
-    const edgeNodes = possibleCoords
-      .map((coord) => this.getNodeByCoordinates(coord));
-
-    return edgeNodes;
-  }
-
   // Get corresponding node
   getNodeByCoordinates(coord) {
     return this.nodes.find((node) => node.value[0] === coord[0] && node.value[1] === coord[1]);
@@ -70,6 +60,14 @@ export default class Graph {
 
   // Set edges list for each node
   setEdges() {
-    this.nodes.forEach((node) => node.edgesList.push(this.getEdges(node)));
+    // Get possible moves
+    this.nodes.forEach((node) => {
+      const possibleCoords = this.getPossibleCoords(node);
+
+      // Add corresponding nodes in the edgesList
+      const edgeNodes = possibleCoords.map((coord) => this.getNodeByCoordinates(coord));
+      node.edgesList.push(edgeNodes);
+    });
   }
+
 }
