@@ -1,6 +1,3 @@
-/* eslint-disable import/extensions */
-import Node from './node.js';
-
 export default class Graph {
   constructor() {
     this.size = 8;
@@ -48,7 +45,7 @@ export default class Graph {
     const possibleCoords = this.getPossibleCoords(node);
 
     const edgeNodes = possibleCoords
-      .map((coord) => this.getNodeByCoordinates(coord) || new Node(coord));
+      .map((coord) => this.getNodeByCoordinates(coord));
 
     return edgeNodes;
   }
@@ -57,4 +54,7 @@ export default class Graph {
     return this.nodes.find((node) => node.value[0] === coord[0] && node.value[1] === coord[1]);
   }
 
+  setEdges() {
+    this.nodes.forEach((node) => node.edgesList.push(this.getEdges(node)));
+  }
 }
