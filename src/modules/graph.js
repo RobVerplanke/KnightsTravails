@@ -1,3 +1,6 @@
+/* eslint-disable import/extensions */
+import Node from './node.js';
+
 export default class Graph {
   constructor() {
     this.size = 8;
@@ -14,6 +17,16 @@ export default class Graph {
     ];
   }
 
+  // Create nodes for each square on the board
+  setNodes() {
+    for (let i = 0; i < this.size; i++) {
+      for (let j = 0; j < this.size; j++) {
+        const newNode = new Node([i, j]);
+        this.addNode(newNode);
+      }
+    }
+  }
+
   // Add new node to graph
   addNode(node) {
     this.nodes.push(node);
@@ -28,7 +41,7 @@ export default class Graph {
     return x >= 0 && x < n && y >= 0 && y < n;
   }
 
-  // Calculate possible moves with delta array
+  // Calculate possible moves (coordinates) with delta array
   getPossibleCoords(node) {
     const x = node.value[0];
     const y = node.value[1];
@@ -40,7 +53,7 @@ export default class Graph {
     return validCoords;
   }
 
-  // Convert valid possible coordinates to nodes
+  // Get possible moves (coordinates) and add the corresponding nodes in the edgesList
   getEdges(node) {
     const possibleCoords = this.getPossibleCoords(node);
 
@@ -50,10 +63,12 @@ export default class Graph {
     return edgeNodes;
   }
 
+  // Get corresponding node
   getNodeByCoordinates(coord) {
     return this.nodes.find((node) => node.value[0] === coord[0] && node.value[1] === coord[1]);
   }
 
+  // Set edges list for each node
   setEdges() {
     this.nodes.forEach((node) => node.edgesList.push(this.getEdges(node)));
   }
