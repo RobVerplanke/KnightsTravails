@@ -70,4 +70,33 @@ export default class Graph {
     });
   }
 
+  bfs(startCoord, endCoord) {
+    const queue = [];
+
+    // Validate coordinates
+    if (!this.isValidCoord(startCoord) || !this.isValidCoord(endCoord)) return console.log('Coordinate(s) not valid!');
+
+    // Get corresponding startnode
+    const startNode = this.getNodeByCoordinates(startCoord);
+
+    // Push startnode to queue
+    queue.push(startNode);
+
+    while (queue.length) {
+      const currentNode = queue.shift();
+
+      console.log('currentNode: ', currentNode);
+      console.log('currentNode value: ', currentNode.value);
+      console.log('currentNode edgesList: ', currentNode.edgesList);
+
+      if (JSON.stringify(currentNode.value) === JSON.stringify(endCoord)) return console.log('endnode found!');
+
+      // Mark node as visited
+      currentNode.visited = true;
+
+      // Add all unvisited edge nodes to the queue
+      currentNode.edgesList[0].forEach((edge) => { if (!edge.visited) queue.push(edge); });
+
+    }
+  }
 }

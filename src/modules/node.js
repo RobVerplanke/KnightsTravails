@@ -2,6 +2,6 @@ export default class Node {
   constructor(value) {
     this.value = value;
     this.edgesList = [];
-    this.visitedNodes = [];
+    this.visited = false;
   }
 }
