@@ -1,4 +1,4 @@
-const adjList = [[]];
+const adjList = new Map();
 const boardSize = 8;
 const deltas = [
   [1, 2],
@@ -31,15 +31,16 @@ function getValidNeighbours(coord) {
   return validCoords;
 }
 
-// Create a 2D array, for each square set the coordinate as key and the neighbours as value
+// Create a 2D array, for each square set the coordinate (string) as key and the neighbours as value
 function setAdjadencies() {
   for (let i = 0; i < boardSize; i++) {
     for (let j = 0; j < boardSize; j++) {
-      adjList.push([i, j], getValidNeighbours([i, j]));
+      const neighbors = getValidNeighbours([i, j]);
+      adjList.set(JSON.stringify([i, j]), neighbors);
     }
   }
 }
 
 setAdjadencies();
 
-console.log(adjList);
+console.log(adjList.get(JSON.stringify([0, 0])));
