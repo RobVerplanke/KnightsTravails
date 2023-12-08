@@ -1,4 +1,4 @@
-const adjList = new Map();
+const adjList = [[]];
 const boardSize = 8;
 const deltas = [
   [1, 2],
@@ -15,6 +15,7 @@ const deltas = [
 function isValidCoord(coord) {
   const x = coord[0];
   const y = coord[1];
+
   return x >= 0 && x < boardSize && y >= 0 && y < boardSize;
 }
 
@@ -30,10 +31,11 @@ function getValidNeighbours(coord) {
   return validCoords;
 }
 
+// Create a 2D array, for each square set the coordinate as key and the neighbours as value
 function setAdjadencies() {
   for (let i = 0; i < boardSize; i++) {
     for (let j = 0; j < boardSize; j++) {
-      adjList.set([i, j], getValidNeighbours([i, j]));
+      adjList.push([i, j], getValidNeighbours([i, j]));
     }
   }
 }
