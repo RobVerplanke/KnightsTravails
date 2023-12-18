@@ -1,3 +1,7 @@
+/* eslint-disable import/extensions */
+
+import bfs from './bfs.js';
+
 const adjList = new Map();
 const boardSize = 8;
 const deltas = [
@@ -43,4 +47,6 @@ function setAdjadencies() {
 
 setAdjadencies();
 
-console.log(adjList.get(JSON.stringify([0, 0])));
+bfs(adjList, [3, 3]);
+
+// console.log(adjList);
