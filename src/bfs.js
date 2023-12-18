@@ -1,28 +1,61 @@
-const queue = function queue() {
+// Create a queue array with function constructor and add basic methods
+const Queue = function Queue() {
   this.items = [];
 };
 
-queue.prototype.enqueue = function enqueue(vertex) {
+Queue.prototype.enqueue = function enqueue(vertex) {
   this.items.push(vertex);
 };
 
-queue.prototype.dequeue = function dequeue() {
+Queue.prototype.dequeue = function dequeue() {
   return this.items.shift();
 };
 
-queue.prototype.isEmpty = function isEmpty() {
+Queue.prototype.isEmpty = function isEmpty() {
   return this.items.length === 0;
 };
 
+// BFS
 export default function bfs(graph, source) {
-  const bfsInfo = new Map();
+  const stringifiedSource = JSON.stringify(source);
+  const bfsInfo = [];
 
-  for (let i = 0; i < graph.size / 8; i++) {
-    for (let j = 0; j < graph.size / 8; j++) {
+  // Fill bfsInfo array with objects for each vertex in the graph,
+  // containing its distance to the source and its predecessor (null by default)
+  for (let i = 0; i < Math.sqrt(graph.size); i++) {
+    for (let j = 0; j < Math.sqrt(graph.size); j++) {
       const key = JSON.stringify([i, j]);
-      bfsInfo.set([key], JSON.stringify([i, j]));
-      console.log('key: ', key);
+
+      bfsInfo[key] = {
+        distance: null,
+        predecessor: null,
+      };
     }
   }
 
+  // Set starting vertex' distance
+  bfsInfo[stringifiedSource].distance = 0;
+
+  // Create a queue and add starting vertex
+  const queue = new Queue();
+  queue.enqueue(stringifiedSource);
+
+  while (!queue.isEmpty()) {
+    const currentVertex = queue.dequeue();
+
+    //  For each neighbor that has not been visited
+    for (let i = 0; i < graph.get(currentVertex).length; i++) {
+      console.log('graph length: ', graph.get(currentVertex).length);
+      const neigbourVertex = graph.get(currentVertex);
+
+      // Set predecessors and distance from source vertex, then add to queue
+      if (bfsInfo[JSON.stringify(neigbourVertex[i])].distance === null) {
+        bfsInfo[JSON.stringify(neigbourVertex[i])].distance = bfsInfo[currentVertex].distance + 1;
+        bfsInfo[JSON.stringify(neigbourVertex[i])].predecessor = currentVertex;
+        queue.enqueue(neigbourVertex[i]);
+      }
+    }
+  }
+
+  return bfsInfo;
 }
