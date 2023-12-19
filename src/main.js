@@ -46,6 +46,5 @@ function setAdjadencies() {
 }
 
 setAdjadencies();
-console.log(bfs(adjList, [1, 2]));
 
-// console.log(adjList);
+console.log(bfs(adjList, [0, 0]));

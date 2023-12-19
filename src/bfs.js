@@ -45,17 +45,15 @@ export default function bfs(graph, source) {
 
     //  For each neighbor that has not been visited
     for (let i = 0; i < graph.get(currentVertex).length; i++) {
-      console.log('graph length: ', graph.get(currentVertex).length);
-      const neigbourVertex = graph.get(currentVertex);
+      const neigbourVertex = JSON.stringify(graph.get(currentVertex)[i]);
 
       // Set predecessors and distance from source vertex, then add to queue
-      if (bfsInfo[JSON.stringify(neigbourVertex[i])].distance === null) {
-        bfsInfo[JSON.stringify(neigbourVertex[i])].distance = bfsInfo[currentVertex].distance + 1;
-        bfsInfo[JSON.stringify(neigbourVertex[i])].predecessor = currentVertex;
-        queue.enqueue(neigbourVertex[i]);
+      if (bfsInfo[neigbourVertex].distance === null) {
+        bfsInfo[neigbourVertex].distance = bfsInfo[currentVertex].distance + 1;
+        bfsInfo[neigbourVertex].predecessor = currentVertex;
+        queue.enqueue(neigbourVertex);
       }
     }
   }
-
   return bfsInfo;
 }
