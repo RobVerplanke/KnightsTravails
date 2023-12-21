@@ -33,7 +33,7 @@ export default function bfs(graph, source) {
     }
   }
 
-  // Set starting vertex' distance
+  // Set distance of starting vertex
   bfsInfo[stringifiedSource].distance = 0;
 
   // Create a queue and add starting vertex

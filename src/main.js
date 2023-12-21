@@ -45,6 +45,26 @@ function setAdjadencies() {
   }
 }
 
+// Get shortest path from starting vertex to end vertex
+function knightMoves(start, end) {
+  let currentVertex = JSON.stringify(end);
+  const bfsInfo = bfs(adjList, start);
+  const path = [];
+  let moves = 0;
+
+  // Add end vertex to path
+  path.push(currentVertex);
+
+  // As long as there is a predecessor, add its predecessor to the path list
+  while (bfsInfo[currentVertex].predecessor !== null) {
+    path.unshift(bfsInfo[currentVertex].predecessor);
+    currentVertex = bfsInfo[currentVertex].predecessor;
+    moves += 1;
+  }
+
+  console.log(`You made it in ${moves} moves! Here's your path: \n`, path);
+}
+
 setAdjadencies();
 
-console.log(bfs(adjList, [0, 0]));
+knightMoves([3, 3], [4, 3]);
